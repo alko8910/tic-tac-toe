@@ -1,0 +1,22 @@
+body {
+  margin: 0;
+  width: 320px;
+  display: flex;
+  justify-content: center;
+}
+
+.tiles-div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  
+  
+}
+.tiles-div div {
+  flex: 1 1 33.333%;
+  max-width: 33.333%;
+  width: 100px;
+  height: 100px;
+  border: 1px solid black;
+  float: left;
+}

@@ -1,0 +1,28 @@
+body {
+  margin: 0;
+  width: 31rem;
+  display: flex;
+  justify-content: center;
+
+}
+
+.tiles-div {
+  display: flex;
+  flex-wrap: wrap;
+  
+
+  
+  
+}
+.tiles-div div {
+  flex: 1 1 33.333%;
+  max-width: 32.333%;
+  width: 10rem;
+  height: 10rem;
+  line-height: 10rem;
+  border: 1px solid black;
+  float: left;
+  text-align: center;
+  font-size: 38px;
+  
+}
