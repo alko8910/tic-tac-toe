@@ -7,13 +7,13 @@ body {
 }
 
 .tiles-div {
+  padding-top: 20px;
   display: flex;
   flex-wrap: wrap;
-  
-
-  
+  justify-content: center;
   
 }
+
 .tiles-div div {
   flex: 1 1 33.333%;
   max-width: 32.333%;

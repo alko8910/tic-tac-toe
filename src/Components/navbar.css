@@ -1,0 +1,12 @@
+.nav-div {
+    border-bottom: 1px solid #00bffe;
+}
+
+.nav-div h2{
+  display: inline-block;
+  padding-left: 40px;
+  
+}
+.tic-tac-toe{
+    padding-left: 0px !important;
+}
