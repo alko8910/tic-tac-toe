@@ -5,7 +5,7 @@ import Game from './Game';
 import Endgame from './Endgame';
 
 const Board = () => {
-    let ID = 1;
+   
     const [gameHistory, setGameHistory] = useState([]);
     const [board, setBoard] = useState(Array(9).fill(null))
     const [xIsNext, setXisNext] = useState(true);
@@ -14,10 +14,12 @@ const Board = () => {
     const firstPlayerWinCounter = gameHistory.filter(hist => hist.winner === 'X').length;
     const secondPlayerWinCounter = gameHistory.filter(hist => hist.winner === 'O').length;
     const drawCounter = gameHistory.filter(hist => hist.winner === null).length;
-
-    //need counter to check if it is a draw 
     const [firstPlayer, setFirstPlayer] = useState(null);
     const [secondPlayer, setSecondPlayer] = useState(null);
+    const [ID, setID] = useState(()=>{
+        const lastID = JSON.parse(localStorage.getItem('ID'));
+        return lastID || 1;
+    });
     
 
     let tiles = [...board];
@@ -32,24 +34,8 @@ const Board = () => {
         }
     }, [])
 
-    const onPlayerWin = (winner) => {
-        const newGameHistory = [
-            ...gameHistory,
-            {
-                winner,
-                time: new Date(),
-                xName: firstPlayer,
-                oName: secondPlayer,
-        
-            }
-        ];
-
-        setGameHistory(newGameHistory);
-        setOpenEndGame(true);
-
-        localStorage.setItem('gameHistory', JSON.stringify(newGameHistory));
-    };
-
+  
+/*
     const getWinnerFromHistElem = (histElem) => {
         if (histElem) {
             return histElem.winner === 'X' ? histElem.xName : histElem.oName;
@@ -57,8 +43,9 @@ const Board = () => {
 
         return null;
     };
-    
+   */
     const play = (index) => {
+      
         if(tiles[index]) return;
         tiles[index] = xIsNext ? 'X' : 'O';
         setXisNext(!xIsNext);
@@ -82,22 +69,66 @@ const Board = () => {
                 if(tiles[a] && tiles[a]===tiles[b] && tiles[a]===tiles[c]){
                     if(tiles[a] === 'X'){
                         onPlayerWin('X');
+                        setID(ID + 1);
                     }else if (tiles[a] === 'O'){
                         onPlayerWin('O');
+                        setID(ID + 1);
                     }
                 }
                 //chech for draw
                 const allFilled = tiles.filter(Boolean).length === 9;
                 if(allFilled  && (tiles[a]===tiles[b] || tiles[a]===tiles[c])){
                     onPlayerWin('draw');
+                    setID(ID + 1);
                 }
         }
+        
+        
     }
   
+    const onPlayerWin = (winner) => {
 
+        const getMaxId = () => {
+            var max = 0;
+
+            for (const elem of gameHistory) {
+                if (elem.ID > max) {
+                    max = elem.ID;
+                }
+            }
+
+            return max;
+        }
+
+        const maxId = getMaxId();
+        
+        const newGameHistory = [
+            ...gameHistory,
+            {
+                ID: maxId + 1,
+                winner,
+                time: new Date(),
+                xName: firstPlayer,
+                oName: secondPlayer,
+                
+            }
+        ];
+        
+        setGameHistory(newGameHistory);
+        setOpenEndGame(true);
+        
+
+
+        localStorage.setItem('gameHistory', JSON.stringify(newGameHistory));
+    };
     const resetBoard = () => {
+       
+        
+       
+        console.log(ID)
         setBoard(Array(9).fill(null));
-        setOpenEndGame(false)
+        setOpenEndGame(false);
+        
     }
 
     const onLogin = (first, second) => {
@@ -117,6 +148,7 @@ const Board = () => {
             <Endgame
                 gameHistory={gameHistory}
                 resetGame={resetBoard}
+                ID={ID}
             />}
             
             <Navbar 
@@ -131,14 +163,13 @@ const Board = () => {
             firstPlayer={firstPlayer}
             secondPlayer={secondPlayer}
             board = {board}
+            loginComplete={onLogin}
             />
             <div className='tiles-div'>
                
                     {square()}
                 </div>
-            <div>
-                <h1>{getWinnerFromHistElem(gameHistory.slice(-1)[0])}</h1>
-            </div>
+            
             
         </div>
     )

@@ -1,24 +1,40 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import './Endgame.css'
 
 function Endgame({resetGame, gameHistory}) {
 
     const [showGameHistory, setShowGameHistory] = useState(false);
 
-    const getWinnerFromHistElem = (histElem) => histElem.winner === 'X' ? histElem.xName : histElem.oName;
+    const getWinnerFromHistElem = (histElem) =>{
+        if(histElem.winner === 'X'){
+            return histElem.xName;
+        }else if(histElem.winner === 'O'){
+            return histElem.oName;
+        }else{
+            return 'draw'
+        }
+    }  
+   
     setTimeout(() => setShowGameHistory(true), 5000);
     const renderHistElem = (histElem) => {
+        let id = `${histElem.ID}`;
+
+       
+        //get time
         const time = new Date(histElem.time);
-        const d = time.getDay().toString()
-        const m = time.getMonth().toString();
+        const d = time.getDate().toString()
+        let m = time.getMonth();
+        m += 1; 
         const h = time.getHours().toString();
         const min = time.getMinutes().toString();
         const getTime = `${d}.${m} ${h}:${min} `;
         const players = `${histElem.xName} vs ${histElem.oName} `;
-        //setGameHistory(gameHistory + getTime + players + winner + ' won \n'  )
-        //setGameHistory(gameHistory.push(gameHistory + getTime + players + winner + ' won'))
-        
-        return <div className='game-history'>{getTime}  {players}  {getWinnerFromHistElem(histElem)} won</div>;
+      // get message for game history
+        if(getWinnerFromHistElem(histElem) === 'draw'){
+            return <div className='game-history'>{id}. {getTime}  {players} - {getWinnerFromHistElem(histElem)}</div>;
+        }else{
+            return <div className='game-history'>{id}. {getTime}  {players} - {getWinnerFromHistElem(histElem)} won</div>;
+        }
     }
 
     return (

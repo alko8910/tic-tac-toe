@@ -14,7 +14,7 @@ function Login({loginComplete}) {
         if (first.length > 0 && second.length > 0) {
             loginComplete(first, second);
         }
-    }, []);
+    },[]);
 
     //Store value to local storage
     useEffect(() => {
