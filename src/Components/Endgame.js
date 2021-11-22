@@ -1,17 +1,16 @@
 import React, {useState} from 'react'
 import './Endgame.css'
 
-function Endgame({resetGame, gameHistory}) {
+function Endgame({resetGame, gameHistory, winMessage}) {
 
-    const [showGameHistory, setShowGameHistory] = useState(false);
-
+    const [showGameHistory, setShowGameHistory] = useState();
     const getWinnerFromHistElem = (histElem) =>{
         if(histElem.winner === 'X'){
             return histElem.xName;
         }else if(histElem.winner === 'O'){
             return histElem.oName;
         }else{
-            return 'draw'
+            return 'draw';
         }
     }  
    
@@ -31,17 +30,19 @@ function Endgame({resetGame, gameHistory}) {
         const players = `${histElem.xName} vs ${histElem.oName} `;
       // get message for game history
         if(getWinnerFromHistElem(histElem) === 'draw'){
-            return <div className='game-history'>{id}. {getTime}  {players} - {getWinnerFromHistElem(histElem)}</div>;
+           return <div className='game-history'>{id}. {getTime}  {players} - {getWinnerFromHistElem(histElem)}</div>;
         }else{
             return <div className='game-history'>{id}. {getTime}  {players} - {getWinnerFromHistElem(histElem)} won</div>;
         }
-    }
 
+        
+    }
+    // <h1>You win {getWinnerFromHistElem(gameHistory.slice(-1)[0])}</h1>
     return (
         <div className='modalBackgorund'>
             <div className='modalContainer'>
                 
-                <h1>You win {getWinnerFromHistElem(gameHistory.slice(-1)[0])}</h1>
+                <h1>{winMessage}</h1>
                 <div>
                     <button onClick={resetGame}>Wanna try again?</button>
                     <button onClick={() => setShowGameHistory(true)}>Game history</button>

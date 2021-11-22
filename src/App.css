@@ -26,3 +26,17 @@ body {
   font-size: 38px;
   
 }
+.error-message {
+  padding-top:10px;
+  padding-left: 15px;
+  font-size: large;
+  color: red;
+  text-align: center;
+}
+.win-message{
+  padding-top:10px;
+  padding-left: 15px;
+  font-size: xx-large;
+  color: red;
+  text-align: center;
+}

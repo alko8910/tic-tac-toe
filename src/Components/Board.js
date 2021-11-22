@@ -5,7 +5,9 @@ import Game from './Game';
 import Endgame from './Endgame';
 
 const Board = () => {
-   
+    const [buttonVisibility, setButtonVisibility] = useState(false);
+    const [winMessage, setWinMessage] = useState('')
+    const [message, setMessage] = useState(false)
     const [gameHistory, setGameHistory] = useState([]);
     const [board, setBoard] = useState(Array(9).fill(null))
     const [xIsNext, setXisNext] = useState(true);
@@ -13,7 +15,7 @@ const Board = () => {
     const [openEndGame, setOpenEndGame] = useState(false);
     const firstPlayerWinCounter = gameHistory.filter(hist => hist.winner === 'X').length;
     const secondPlayerWinCounter = gameHistory.filter(hist => hist.winner === 'O').length;
-    const drawCounter = gameHistory.filter(hist => hist.winner === null).length;
+    const drawCounter = gameHistory.filter(hist => hist.winner === 'draw').length;
     const [firstPlayer, setFirstPlayer] = useState(null);
     const [secondPlayer, setSecondPlayer] = useState(null);
     const [ID, setID] = useState(()=>{
@@ -45,8 +47,11 @@ const Board = () => {
     };
    */
     const play = (index) => {
-      
-        if(tiles[index]) return;
+        
+        if(tiles[index]) {
+          return  setMessage(true)
+        };
+        setMessage(false)
         tiles[index] = xIsNext ? 'X' : 'O';
         setXisNext(!xIsNext);
         setBoard(tiles);
@@ -70,16 +75,22 @@ const Board = () => {
                     if(tiles[a] === 'X'){
                         onPlayerWin('X');
                         setID(ID + 1);
+                        setWinMessage(`${firstPlayer} win`)
+                        setButtonVisibility(true);
                     }else if (tiles[a] === 'O'){
+                        setWinMessage(`${secondPlayer} win`)
                         onPlayerWin('O');
                         setID(ID + 1);
+                        setButtonVisibility(true);
                     }
                 }
                 //chech for draw
                 const allFilled = tiles.filter(Boolean).length === 9;
                 if(allFilled  && (tiles[a]===tiles[b] || tiles[a]===tiles[c])){
+                    setWinMessage('DRAW')
                     onPlayerWin('draw');
                     setID(ID + 1);
+                    setButtonVisibility(true);
                 }
         }
         
@@ -110,31 +121,30 @@ const Board = () => {
                 time: new Date(),
                 xName: firstPlayer,
                 oName: secondPlayer,
-                
             }
         ];
         
         setGameHistory(newGameHistory);
-        setOpenEndGame(true);
+        
         
 
 
         localStorage.setItem('gameHistory', JSON.stringify(newGameHistory));
     };
     const resetBoard = () => {
-       
-        
-       
-        console.log(ID)
-        setBoard(Array(9).fill(null));
+       setBoard(Array(9).fill(null));
         setOpenEndGame(false);
-        
+        setWinMessage('');
+        setButtonVisibility(false);
     }
 
     const onLogin = (first, second) => {
         setFirstPlayer(first);
         setSecondPlayer(second);
         setOpenLogin(false);
+    }
+    const showHistory = () => {
+        setOpenEndGame(true);
     }
         
     
@@ -149,6 +159,7 @@ const Board = () => {
                 gameHistory={gameHistory}
                 resetGame={resetBoard}
                 ID={ID}
+                winMessage={winMessage}
             />}
             
             <Navbar 
@@ -166,11 +177,16 @@ const Board = () => {
             loginComplete={onLogin}
             />
             <div className='tiles-div'>
-               
-                    {square()}
-                </div>
-            
-            
+               {square()}
+            </div>
+               {message &&
+               <div className='error-message'>Choose unoccupied cell!!</div>
+               }
+
+            <div className='win-message'>{winMessage}</div>
+            { buttonVisibility &&
+                <button onClick={showHistory}>Show history</button>
+            }
         </div>
     )
 }
