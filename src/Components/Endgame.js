@@ -3,7 +3,7 @@ import './Endgame.css'
 
 function Endgame({resetGame, gameHistory, winMessage}) {
 
-    const [showGameHistory, setShowGameHistory] = useState();
+    
     const getWinnerFromHistElem = (histElem) =>{
         if(histElem.winner === 'X'){
             return histElem.xName;
@@ -14,11 +14,10 @@ function Endgame({resetGame, gameHistory, winMessage}) {
         }
     }  
    
-    setTimeout(() => setShowGameHistory(true), 5000);
+    
     const renderHistElem = (histElem) => {
         let id = `${histElem.ID}`;
 
-       
         //get time
         const time = new Date(histElem.time);
         const d = time.getDate().toString()
@@ -45,13 +44,11 @@ function Endgame({resetGame, gameHistory, winMessage}) {
                 <h1>{winMessage}</h1>
                 <div>
                     <button onClick={resetGame}>Wanna try again?</button>
-                    <button onClick={() => setShowGameHistory(true)}>Game history</button>
                 </div>
-                {showGameHistory && (
                     <div>
                         {gameHistory.map(renderHistElem)}
                     </div>
-                )}
+                
             </div>
         </div>
     )

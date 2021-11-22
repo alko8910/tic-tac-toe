@@ -77,11 +77,13 @@ const Board = () => {
                         setID(ID + 1);
                         setWinMessage(`${firstPlayer} win`)
                         setButtonVisibility(true);
+                        setTimeout(() => setOpenEndGame(true), 2000);
                     }else if (tiles[a] === 'O'){
                         setWinMessage(`${secondPlayer} win`)
                         onPlayerWin('O');
                         setID(ID + 1);
                         setButtonVisibility(true);
+                        setTimeout(() => setOpenEndGame(true), 2000);
                     }
                 }
                 //chech for draw
@@ -91,6 +93,7 @@ const Board = () => {
                     onPlayerWin('draw');
                     setID(ID + 1);
                     setButtonVisibility(true);
+                    setTimeout(() => setOpenEndGame(true), 2000);
                 }
         }
         
@@ -146,7 +149,8 @@ const Board = () => {
     const showHistory = () => {
         setOpenEndGame(true);
     }
-        
+
+    
     
    return (
         <div>
