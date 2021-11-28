@@ -17,3 +17,10 @@
     flex-direction: column;
     padding: 25px;
   }
+
+  .win-message {
+    color: red;
+    font-size: x-large;
+    text-align: center;
+}
+        

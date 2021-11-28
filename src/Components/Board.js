@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Login from './Login';
 import Navbar from './Navbar';
 import Game from './Game';
+import History from './History';
 import Endgame from './Endgame';
 
 const Board = () => {
@@ -77,13 +78,15 @@ const Board = () => {
                         setID(ID + 1);
                         setWinMessage(`${firstPlayer} win`)
                         setButtonVisibility(true);
-                        setTimeout(() => setOpenEndGame(true), 2000);
+                        //setTimeout(() => setOpenEndGame(true), 2000);
+                        setOpenEndGame(true)
                     }else if (tiles[a] === 'O'){
                         setWinMessage(`${secondPlayer} win`)
                         onPlayerWin('O');
                         setID(ID + 1);
                         setButtonVisibility(true);
-                        setTimeout(() => setOpenEndGame(true), 2000);
+                       // setTimeout(() => setOpenEndGame(true), 2000);
+                       setOpenEndGame(true)
                     }
                 }
                 //chech for draw
@@ -146,25 +149,25 @@ const Board = () => {
         setSecondPlayer(second);
         setOpenLogin(false);
     }
-    const showHistory = () => {
+    /*const showHistory = () => {
         setOpenEndGame(true);
-    }
+    }*/
 
     
-    
+    console.log(openEndGame)
    return (
         <div>
             {openLogin &&
              <Login 
                 loginComplete={onLogin}
             />}
-            {openEndGame &&
-            <Endgame
-                gameHistory={gameHistory}
-                resetGame={resetBoard}
-                ID={ID}
-                winMessage={winMessage}
-            />}
+            
+            { openEndGame &&
+                    <Endgame
+                    winMessage={winMessage}
+                    resetGame={resetBoard}
+                    />
+                    }
             
             <Navbar 
             firstPlayer={firstPlayer}
@@ -188,9 +191,16 @@ const Board = () => {
                }
 
             <div className='win-message'>{winMessage}</div>
-            { buttonVisibility &&
-                <button onClick={showHistory}>Show history</button>
-            }
+           
+         
+            <History
+                gameHistory={gameHistory}
+                ID={ID}
+                winMessage={winMessage}
+            />
+
+            
+                
         </div>
     )
 }
